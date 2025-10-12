@@ -12,29 +12,48 @@ const [isModalDisplayed, setIsModalDisplayed] = React.useState(false)
 
 //add ids to dessert items 
 const mappedDessertsDataWithIDs = dessertsData.map(function(dessert){
-    return {id: nanoid(), ...dessert}
+    return {id: nanoid(), count: null, ...dessert}
 })
 
 //maps over dessert items to display them on DOM
 const mappedDessertData = mappedDessertsDataWithIDs.map(function(dessert){
+    let count = cart.filter(cartdessert=>cartdessert.name === dessert.name).length
+    console.log("dessertcount", dessert.count)
     return (
     <div key={dessert.id}>
             <img className="dessert-img" src={dessert.image} />
-            <button className = "add-to-cart-btn" onClick={()=>addToCart(dessert.id)}>
-                <img src="/assets/icon-add-to-cart.svg" /><span className = "bold">Add to Cart</span>
-            </button>
+        
+            {count > 0? 
+                <div className = "number-of-dessert-div">
+                    <button className = "decrement-btn" onClick={()=>decrementCount(dessert.id)}>-</button>
+                    <button className = "increment-btn" onClick={()=>incrementCount(dessert.id)}>+</button>
+                </div>:
+                <button className = "add-to-cart-btn" onClick={()=>addToCart(dessert.id)}>
+                    <img src="/assets/icon-add-to-cart.svg" /><span className = "bold">Add to Cart</span>
+                </button>
+            }
+          
+          
         <p className = "bold">{dessert.name}</p><p className="red-text-color">${dessert.price.toFixed(2)}</p>
     </div>)
     })
 
+//creates a new array of desserts in the cart with the variable "count" that displays how many of that item the user has selected
+const numberofEachDessertInCart = dessertsData.map(function(masterdessert){
+    let count = cart.filter(cartdessert=>cartdessert.name === masterdessert.name).length
+    return {...masterdessert, count: count}})
+
+//variable to isolate the desserts in the cart that have a count greater than 0 so all desserts aren't displayed in the cart
+const selectedDesserts = numberofEachDessertInCart.filter(dessert=>dessert.count > 0)
+
 //maps over selected desserts to display in cart and in modal
-const mappedSelectedDesserts = cart.map(function(dessert){
+const mappedSelectedDesserts = selectedDesserts.map(function(dessert){
     return (
     <>
         <div className="cart-dessert" key={dessert.id}>
             <div>  
                 <p className="bold">{dessert.name}</p>
-                <p><span className ="red-text-color bold">1x</span> @ ${dessert.price.toFixed(2)}</p>
+                <p><span className ="red-text-color bold">{dessert.count}x</span> @ ${dessert.price.toFixed(2)}</p>
                 <p>placeholder - total price</p>   
             </div>
             <div> 

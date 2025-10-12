@@ -3,7 +3,7 @@ export const dessertsData = [
     {
      name:  "Waffle with Berries", 
      price: 6.50, 
-     image: "/desserts/image-waffle-desktop.jpg" 
+     image: "/desserts/image-waffle-desktop.jpg"
     }, 
     {
      name:  "Vanilla Bean Creme Brulee", 
