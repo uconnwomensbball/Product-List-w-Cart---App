@@ -5,25 +5,24 @@ import { nanoid } from 'nanoid'
 export default function App(){
 
 //variables 
+const [dessertDataWAllProps, setDessertDataWAllProps] = React.useState(
+    dessertsData.map(dessert=>({
+        ...dessert, 
+        id: nanoid(), 
+        count: 0})))
+console.log("dessertDataWAllProps:", dessertDataWAllProps);
 const [cart, setCart] = React.useState([])
 const [numberOfItems, setNumberOfItems] = React.useState(cart.length)
 const [totalPrice, setTotalPrice] = React.useState(0)
 const [isModalDisplayed, setIsModalDisplayed] = React.useState(false)
 
-//add ids to dessert items 
-const mappedDessertsDataWithIDs = dessertsData.map(function(dessert){
-    return {id: nanoid(), count: null, ...dessert}
-})
-
 //maps over dessert items to display them on DOM
-const mappedDessertData = mappedDessertsDataWithIDs.map(function(dessert){
-    let count = cart.filter(cartdessert=>cartdessert.name === dessert.name).length
-    console.log("dessertcount", dessert.count)
+const mappedDessertData = dessertDataWAllProps.map(function(dessert){
     return (
     <div key={dessert.id}>
             <img className="dessert-img" src={dessert.image} />
         
-            {count > 0? 
+            {dessert.count > 0? 
                 <div className = "number-of-dessert-div">
                     <button className = "decrement-btn" onClick={()=>decrementCount(dessert.id)}>-</button>
                     <button className = "increment-btn" onClick={()=>incrementCount(dessert.id)}>+</button>
@@ -32,12 +31,10 @@ const mappedDessertData = mappedDessertsDataWithIDs.map(function(dessert){
                     <img src="/assets/icon-add-to-cart.svg" /><span className = "bold">Add to Cart</span>
                 </button>
             }
-          
-          
         <p className = "bold">{dessert.name}</p><p className="red-text-color">${dessert.price.toFixed(2)}</p>
     </div>)
     })
-
+//T2D get rid of numberofDessertInCart
 //creates a new array of desserts in the cart with the variable "count" that displays how many of that item the user has selected
 const numberofEachDessertInCart = dessertsData.map(function(masterdessert){
     let count = cart.filter(cartdessert=>cartdessert.name === masterdessert.name).length
@@ -64,8 +61,17 @@ const mappedSelectedDesserts = selectedDesserts.map(function(dessert){
     </>)})
 
 //function - adds items to cart
-function addToCart(id){ 
-    const newItem = mappedDessertsDataWithIDs.find(item =>item.id === id)
+function addToCart(id){
+    setDessertDataWAllProps(prevDessert=>{ return (
+        prevDessert.map(dessert=> dessert.id === id? {...dessert, count: dessert.count + 1}: dessert
+        ))
+
+    })
+    
+
+
+    console.log(id)
+    const newItem = dessertDataWAllProps.find(item =>item.id === id)
     setCart(prevItems =>[...prevItems, newItem])
     setNumberOfItems(prevLength=>prevLength + 1)
 }
