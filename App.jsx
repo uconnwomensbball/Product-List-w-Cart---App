@@ -12,13 +12,12 @@ const [dessertDataWAllProps, setDessertDataWAllProps] = React.useState(
         id: nanoid(), 
         count: 0})))
         
-
 const [totalPrice, setTotalPrice] = React.useState(0)
-const [isModalDisplayed, setIsModalDisplayed] = React.useState(false)
+const [isOrderConfirmedModalDisplayed, setIsOrderConfirmedModalDisplayed] = React.useState(false)
+const [isOrderAtMaxDessertsModalDisplayed, setIsOrderAtMaxDessertsModalDisplayed] = React.useState(false)
 
 //maps over dessert items to display them on DOM
 const mappedDessertData = dessertDataWAllProps.map(function(dessert){
-    console.log("dessert", dessert)
     return (
     <div key={dessert.id}>
             <img className="dessert-img" src={dessert.image} />
@@ -47,16 +46,14 @@ const mappedSelectedDesserts = selectedDesserts.map(function(dessert){
         <div className="cart-dessert" key={dessert.id}>
             <div>  
                 <p className="bold">{dessert.name}</p>
-                <p><span className ="red-text-color bold">{dessert.count}x</span> @ ${(dessert.count * dessert.price).toFixed(2)}</p>
-                <p>placeholder - total price</p>   
+                <p><span className ="red-text-color bold">{dessert.count}x</span> @ ${(dessert.count * dessert.price).toFixed(2)}</p>  
             </div>
-                {isModalDisplayed? null: 
+                {isOrderConfirmedModalDisplayed? null: 
                     <div>
                         <button className="remove-btn" onClick={()=>removeFromCart(dessert.name)}>
-                            <img src="./assets/icon-remove-item.svg"/>
+                            <img className = "remove-item-x" src="./assets/icon-remove-item.svg"/>
                         </button>
                     </div>}
-          
         </div>
         <hr></hr>
     </>)})
@@ -65,7 +62,11 @@ const mappedSelectedDesserts = selectedDesserts.map(function(dessert){
 function addToCart(id){
     setDessertDataWAllProps(prevDessert=>{ return (
         prevDessert.map(dessert=> dessert.id === id? {...dessert, count: dessert.count + 1}: dessert
-        ))})}
+        ))})
+    dessertsTotalCount === 8? setIsOrderAtMaxDessertsModalDisplayed(true): null
+    console.log(dessertsTotalCount)
+    console.log(isOrderAtMaxDessertsModalDisplayed)
+    }
 
 //function - decrements the number of a dessert in cart by 1
 function decrementCount(id){
@@ -89,19 +90,27 @@ const dessertsTotalPrice = selectedDesserts.reduce(function(accumulator, current
         setTotalPrice(dessertsTotalPrice)
     }, [dessertDataWAllProps])
 
+//calculates the total number of desserts 
+    const dessertsTotalCount = selectedDesserts.reduce(function(accumulator, currentValue) {
+  return accumulator + currentValue.count
+}, 0)
+
 //function - confirms order (aka displays modal)
 function confirmOrder(){
-    setIsModalDisplayed(true)
+    setIsOrderConfirmedModalDisplayed(true)
 }
 
 //function - starts new order and clears out prior order
 function startNewOrder(){
-    setIsModalDisplayed(false)
-   
-
+    setIsOrderConfirmedModalDisplayed(false)
     setDessertDataWAllProps(dessertsData.map(dessert=>({
         ...dessert,  
         count: 0})))
+}
+
+//function - returns user to prior order after modal displays letting them know they are capped at 9 items per order
+function returntoOrder(){
+    setIsOrderAtMaxDessertsModalDisplayed(false)
 }
 
 return (
@@ -112,7 +121,7 @@ return (
                     {mappedDessertData}
                 </div>
                 <div className="cart-div">
-                    <h2 className="red-text-color">Your Cart (<span></span>)</h2>
+                    <h2 className="red-text-color">Your Cart (<span>{dessertsTotalCount}</span>)</h2>
                     <div id="cart-content">
                     {selectedDesserts.length === 0? 
                     <div className = "empty-cart-content-div">
@@ -130,13 +139,24 @@ return (
                 </div>
                 </div>
             </div>
-            {isModalDisplayed &&  
+            {isOrderConfirmedModalDisplayed &&  
             <div className="modal-div">
                 <img src="./assets/icon-order-confirmed.svg"/>
                 <h1>Order Confirmed</h1>
+                <p>Your order ID: {nanoid()}</p>
                 <p>We hope you enjoy your food!</p>
                 {mappedSelectedDesserts}
+                <div className="order-div">
+                    <p className="bold">Order Total</p> 
+                    <p className="bold">${totalPrice.toFixed(2)}</p>
+                </div>
+               
                 <button className = "red-bg-color start-new-order-btn bold" onClick={startNewOrder}>Start New Order</button>
+            </div>}
+            {isOrderAtMaxDessertsModalDisplayed &&  
+            <div className="modal-div">
+                <p>We're sorry, you are limited to 9 items per order. To order more than 9 items, please submit your current order, and then start a new order.</p>
+                <button className = "red-bg-color start-new-order-btn bold" onClick={returntoOrder}>Return to Order</button>
             </div>}
         <footer>JDJD Codes <FontAwesomeIcon icon={faScaleBalanced} /></footer>
     </>
