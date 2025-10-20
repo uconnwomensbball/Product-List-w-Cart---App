@@ -17,6 +17,7 @@ body{
     justify-content: center;
     align-items: flex-start;
     gap: 1rem; 
+    max-width: 1440px;
 
 }
 
@@ -102,10 +103,19 @@ body{
     background-color: hsl(12, 20%, 44%);
 }
 
+footer{
+    text-align: center;
+}
 /* Modal */
 .modal-div{
-    display: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; 
+    position: fixed;
     top: 0; left: 0;
+    margin: auto; 
+    background-color: hsl(20, 50%, 98%);
 }
 
 /* Colors */
