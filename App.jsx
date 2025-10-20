@@ -10,6 +10,7 @@ const [dessertDataWAllProps, setDessertDataWAllProps] = React.useState(
         ...dessert, 
         id: nanoid(), 
         count: 0})))
+        
 console.log("dessertDataWAllProps:", dessertDataWAllProps);
 const [cart, setCart] = React.useState([])
 const [numberOfItems, setNumberOfItems] = React.useState(cart.length)
