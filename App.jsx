@@ -14,8 +14,8 @@ const [dessertDataWAllProps, setDessertDataWAllProps] = React.useState(
         
 const [totalPrice, setTotalPrice] = React.useState(0)
 const [isOrderConfirmedModalDisplayed, setIsOrderConfirmedModalDisplayed] = React.useState(false)
-const [isOrderAtMaxDessertsModalDisplayed, setIsOrderAtMaxDessertsModalDisplayed] = React.useState(false)
-
+const [isOrderAtMaxDesserts, setIsOrderAtMaxDesserts] = React.useState(false)
+const [isMaxDessertsModalDisplayed, setIsMaxDessertsModalDisplayed] = React.useState(false)
 //maps over dessert items to display them on DOM
 const mappedDessertData = dessertDataWAllProps.map(function(dessert){
     return (
@@ -26,9 +26,9 @@ const mappedDessertData = dessertDataWAllProps.map(function(dessert){
                 <div className = "number-of-dessert-div">
                     <button className = "decrement-btn" onClick={()=>decrementCount(dessert.id)}>-</button>
                     <p>{dessert.count}</p>
-                    <button className = "increment-btn" onClick={()=>addToCart(dessert.id)}>+</button>
+                    <button className = "increment-btn" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts}>+</button>
                 </div>:
-                <button className = "add-to-cart-btn" onClick={()=>addToCart(dessert.id)}>
+                <button className = "add-to-cart-btn" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts}>
                     <img src="/assets/icon-add-to-cart.svg" /><span className = "bold">Add to Cart</span>
                 </button>
             }
@@ -50,7 +50,7 @@ const mappedSelectedDesserts = selectedDesserts.map(function(dessert){
             </div>
                 {isOrderConfirmedModalDisplayed? null: 
                     <div>
-                        <button className="remove-btn" onClick={()=>removeFromCart(dessert.name)}>
+                        <button className="remove-btn" onClick={()=>removeFromCart(dessert.name)} disabled={isOrderAtMaxDesserts}>
                             <img className = "remove-item-x" src="./assets/icon-remove-item.svg"/>
                         </button>
                     </div>}
@@ -63,16 +63,21 @@ function addToCart(id){
     setDessertDataWAllProps(prevDessert=>{ return (
         prevDessert.map(dessert=> dessert.id === id? {...dessert, count: dessert.count + 1}: dessert
         ))})
-    dessertsTotalCount === 8? setIsOrderAtMaxDessertsModalDisplayed(true): null
-    console.log(dessertsTotalCount)
-    console.log(isOrderAtMaxDessertsModalDisplayed)
+        if (dessertsTotalCount >=8){
+            setIsOrderAtMaxDesserts(true)
+            setIsMaxDessertsModalDisplayed(true)
+        }
+
     }
 
 //function - decrements the number of a dessert in cart by 1
 function decrementCount(id){
      setDessertDataWAllProps(prevDessert=>{ return (
         prevDessert.map(dessert=> dessert.id === id? {...dessert, count: dessert.count - 1}: dessert
-        ))})}
+        ))})
+    if (dessertsTotalCount <11){
+     setIsOrderAtMaxDesserts(false)
+    }}
 
 //function - completely removes a dessert from cart (no matter how many of that dessert were in the cart)
 function removeFromCart(name){
@@ -110,7 +115,7 @@ function startNewOrder(){
 
 //function - returns user to prior order after modal displays letting them know they are capped at 9 items per order
 function returntoOrder(){
-    setIsOrderAtMaxDessertsModalDisplayed(false)
+    setIsMaxDessertsModalDisplayed(false)
 }
 
 return (
@@ -134,7 +139,7 @@ return (
                             <p className="bold">Order Total</p> 
                             <p className="bold">${totalPrice.toFixed(2)}</p>
                         </div>
-                        <button className = "red-bg-color confirm-btn bold" onClick={confirmOrder}>Confirm Order</button>
+                        <button className = "red-bg-color confirm-btn bold" onClick={confirmOrder} disabled={isOrderAtMaxDesserts}>Confirm Order</button>
                     </> }   
                 </div>
                 </div>
@@ -153,7 +158,7 @@ return (
                
                 <button className = "red-bg-color start-new-order-btn bold" onClick={startNewOrder}>Start New Order</button>
             </div>}
-            {isOrderAtMaxDessertsModalDisplayed &&  
+            {isMaxDessertsModalDisplayed &&  
             <div className="modal-div">
                 <p>We're sorry, you are limited to 9 items per order. To order more than 9 items, please submit your current order, and then start a new order.</p>
                 <button className = "red-bg-color start-new-order-btn bold" onClick={returntoOrder}>Return to Order</button>
