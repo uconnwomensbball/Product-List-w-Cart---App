@@ -19,20 +19,23 @@ const [isMaxDessertsModalDisplayed, setIsMaxDessertsModalDisplayed] = React.useS
 //maps over dessert items to display them on DOM
 const mappedDessertData = dessertDataWAllProps.map(function(dessert){
     return (
-    <div key={dessert.id}>
+    <div className = "individual-dessert-div" key={dessert.id}>
             <img className="dessert-img" src={dessert.image} />
 
             {dessert.count > 0? 
                 <div className = "number-of-dessert-div">
-                    <button className = "decrement-btn" onClick={()=>decrementCount(dessert.id)}>-</button>
+                    <button className = "decrement-btn bold" onClick={()=>decrementCount(dessert.id)}>-</button>
                     <p>{dessert.count}</p>
-                    <button className = "increment-btn" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts}>+</button>
+                    <button className = "increment-btn bold" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts}>+</button>
                 </div>:
                 <button className = "add-to-cart-btn" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts}>
                     <img src="/assets/icon-add-to-cart.svg" /><span className = "bold">Add to Cart</span>
                 </button>
             }
-        <p className = "bold">{dessert.name}</p><p className="red-text-color">${dessert.price.toFixed(2)}</p>
+     
+            <p className = "bold dessert-name">{dessert.name}</p>
+            <p className="red-text-color bold dessert-price">${dessert.price.toFixed(2)}</p>
+     
     </div>)
     })
 
@@ -45,8 +48,8 @@ const mappedSelectedDesserts = selectedDesserts.map(function(dessert){
     <>
         <div className="cart-dessert" key={dessert.id}>
             <div>  
-                <p className="bold">{dessert.name}</p>
-                <p><span className ="red-text-color bold">{dessert.count}x</span> @ ${(dessert.count * dessert.price).toFixed(2)}</p>  
+                <p className="bold dessert-name-cart">{dessert.name}</p>
+                <p className="dessert-count-cart"><span className ="red-text-color bold">{dessert.count}x</span> @ ${(dessert.count * dessert.price).toFixed(2)}</p>  
             </div>
                 {isOrderConfirmedModalDisplayed? null: 
                     <div>
@@ -55,7 +58,7 @@ const mappedSelectedDesserts = selectedDesserts.map(function(dessert){
                         </button>
                     </div>}
         </div>
-        <hr></hr>
+        <hr className = "hr"></hr>
     </>)})
 
 //function - adds items to cart (increments the number of a dessert in cart by 1)
@@ -136,7 +139,7 @@ return (
                     <>
                        {mappedSelectedDesserts}
                         <div className="order-div">
-                            <p className="bold">Order Total</p> 
+                            <p className="bold order-total">Order Total</p> 
                             <p className="bold">${totalPrice.toFixed(2)}</p>
                         </div>
                         <button className = "red-bg-color confirm-btn bold" onClick={confirmOrder} disabled={isOrderAtMaxDesserts}>Confirm Order</button>

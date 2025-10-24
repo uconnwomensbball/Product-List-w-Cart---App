@@ -19,12 +19,14 @@ body{
     gap: 1rem; 
     max-width: 1440px;
 
+
 }
 
 .desserts-div{
     display: grid; 
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
+    margin: 0px; 
    
 }
 
@@ -32,6 +34,15 @@ body{
     height: 15rem; 
     width: 15rem;
     border-radius: 10px;
+    margin-bottom: 7px; 
+}
+
+.dessert-name{
+    margin: 10px 0px 5px 0px; 
+}
+
+.dessert-price{
+    margin: 0px; 
 }
 
 .number-of-dessert-div{
@@ -56,6 +67,7 @@ body{
     text-align: left;
     width: 300px; 
   
+  
 }
 .empty-cart-content-div{
     display: flex; 
@@ -69,14 +81,28 @@ body{
      flex-direction: row; 
      justify-content: space-between;
      align-items: center;
+     margin: 0px; 
+}
+
+.dessert-name-cart{
+    margin: 0px 0px 5px 0px; 
+}
+
+.dessert-count-cart{
+    margin: 0px;
+    padding: 0px 0px 2px 0px;  
 }
 
 .order-div{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center; 
-    margin: auto; 
+    align-items: center;
+    width: 100%;      
+}
+
+.order-div>p{
+    margin: 10px 0px 20px 0px; 
 }
 
 /* Buttons */
@@ -92,15 +118,24 @@ body{
     font-family: 'Red Hat Text';
     margin: auto;
 
+
 }
 
 .add-to-cart-btn:hover{
     color: hsl(14, 86%, 42%);
+    border: 2px solid hsl(14, 86%, 42%);
 }
 
 .remove-btn{
     cursor: pointer;
-    border-radius: 50%;  
+    border-radius: 50px;
+    border: 2px solid gray;
+    background-color: hsl(20, 50%, 98%);
+      
+}
+
+.remove-btn:hover{
+    background-color: gray;
 }
 
 .confirm-btn, .start-new-order-btn{
@@ -110,7 +145,6 @@ body{
     padding: 15px 15px;
     font-family: 'Red Hat Text'; 
     width: 100%; 
-    
 }
 
 .confirm-btn:hover, .start-new-order-btn:hover{
@@ -120,16 +154,22 @@ body{
 .decrement-btn, .increment-btn{
     border-radius: 50%;
     background-color: hsl(14, 86%, 42%);
-    border: 1px solid hsl(20, 50%, 98%);
+    border: 1.75px solid hsl(20, 50%, 98%);
     color: hsl(20, 50%, 98%);
     cursor: pointer;
     margin: 0px; 
-   
+}
+
+.increment-btn:hover, .decrement-btn:hover{
+    background-color: hsl(20, 50%, 98%);
+    color: hsl(14, 86%, 42%);
 }
 
 footer{
     text-align: center;
+    margin-top: 20px; 
 }
+
 /* Modal */
 .modal-div{
     display: flex;
@@ -145,18 +185,35 @@ footer{
     margin: 0px; 
 }
 
+hr {
+  width: 100%; 
+}
+
 /* Colors */
 .red-text-color{
     color: hsl(14, 86%, 42%);
 }
 
 .red-bg-color{
-background-color: hsl(14, 86%, 42%);
-color: hsl(20, 50%, 98%);
+    background-color: hsl(14, 86%, 42%);
+    color: hsl(20, 50%, 98%);
 }
 
 /* Misc */
 .bold{
     font-weight: 600;
 }
+
 /* @MediaQueries */
+@media (max-width: 600px) {
+   
+    .main{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; 
+    }
+    .desserts-div{
+        display: flex; 
+        flex-direction: column;
+    }
+}
