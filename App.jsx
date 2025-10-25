@@ -16,6 +16,7 @@ const [totalPrice, setTotalPrice] = React.useState(0)
 const [isOrderConfirmedModalDisplayed, setIsOrderConfirmedModalDisplayed] = React.useState(false)
 const [isOrderAtMaxDesserts, setIsOrderAtMaxDesserts] = React.useState(false)
 const [isMaxDessertsModalDisplayed, setIsMaxDessertsModalDisplayed] = React.useState(false)
+
 //maps over dessert items to display them on DOM
 const mappedDessertData = dessertDataWAllProps.map(function(dessert){
     return (
@@ -70,7 +71,6 @@ function addToCart(id){
             setIsOrderAtMaxDesserts(true)
             setIsMaxDessertsModalDisplayed(true)
         }
-
     }
 
 //function - decrements the number of a dessert in cart by 1
@@ -112,7 +112,8 @@ function confirmOrder(){
 function startNewOrder(){
     setIsOrderConfirmedModalDisplayed(false)
     setDessertDataWAllProps(dessertsData.map(dessert=>({
-        ...dessert,  
+        ...dessert, 
+        id: nanoid(),  
         count: 0})))
 }
 
