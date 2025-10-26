@@ -21,15 +21,15 @@ const [isMaxDessertsModalDisplayed, setIsMaxDessertsModalDisplayed] = React.useS
 const mappedDessertData = dessertDataWAllProps.map(function(dessert){
     return (
     <div className = "individual-dessert-div" key={dessert.id}>
-            <img className="dessert-img" src={dessert.image} />
+            <img className={`dessert-img ${dessert.count >0? "red-border":""}`} src={dessert.image} />
 
             {dessert.count > 0? 
                 <div className = "number-of-dessert-div">
-                    <button className = "decrement-btn bold" onClick={()=>decrementCount(dessert.id)}>-</button>
+                    <button className = "decrement-btn bold" onClick={()=>decrementCount(dessert.id)} disabled ={isOrderConfirmedModalDisplayed}>-</button>
                     <p>{dessert.count}</p>
-                    <button className = "increment-btn bold" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts}>+</button>
+                    <button className = "increment-btn bold" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts || isOrderConfirmedModalDisplayed}>+</button>
                 </div>:
-                <button className = "add-to-cart-btn" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts}>
+                <button className = "add-to-cart-btn" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts || isOrderConfirmedModalDisplayed}>
                     <img src="/assets/icon-add-to-cart.svg" /><span className = "bold">Add to Cart</span>
                 </button>
             }
@@ -52,35 +52,50 @@ const mappedSelectedDesserts = selectedDesserts.map(function(dessert){
                 <p className="bold dessert-name-cart">{dessert.name}</p>
                 <p className="dessert-count-cart"><span className ="red-text-color bold">{dessert.count}x</span> @ ${(dessert.count * dessert.price).toFixed(2)}</p>  
             </div>
-                {isOrderConfirmedModalDisplayed? null: 
                     <div>
-                        <button className="remove-btn" onClick={()=>removeFromCart(dessert.name)} disabled={isOrderAtMaxDesserts}>
+                        <button className="remove-btn" onClick={()=>removeFromCart(dessert.name)} disabled={isOrderAtMaxDesserts || isOrderConfirmedModalDisplayed}>
                             <img className = "remove-item-x" src="./assets/icon-remove-item.svg"/>
                         </button>
-                    </div>}
+                    </div>
         </div>
         <hr className = "hr"></hr>
     </>)})
+
+//calculates the total number of desserts 
+    const dessertsTotalCount = selectedDesserts.reduce(function(accumulator, currentValue) {
+  return accumulator + currentValue.count
+}, 0)
 
 //function - adds items to cart (increments the number of a dessert in cart by 1)
 function addToCart(id){
     setDessertDataWAllProps(prevDessert=>{ return (
         prevDessert.map(dessert=> dessert.id === id? {...dessert, count: dessert.count + 1}: dessert
         ))})
-        if (dessertsTotalCount >=8){
-            setIsOrderAtMaxDesserts(true)
-            setIsMaxDessertsModalDisplayed(true)
-        }
+    checkNumberofItems()
+  
+       
     }
+
+//function 
+function checkNumberofItems(){
+       if (dessertsTotalCount === 9){
+        setIsOrderAtMaxDesserts(true)
+        setIsMaxDessertsModalDisplayed(true)}
+    
+    else if (dessertsTotalCount <9){
+        setIsOrderAtMaxDesserts(false)
+        setIsMaxDessertsModalDisplayed(false)}
+       
+    
+}
 
 //function - decrements the number of a dessert in cart by 1
 function decrementCount(id){
      setDessertDataWAllProps(prevDessert=>{ return (
         prevDessert.map(dessert=> dessert.id === id? {...dessert, count: dessert.count - 1}: dessert
         ))})
-    if (dessertsTotalCount <11){
-     setIsOrderAtMaxDesserts(false)
-    }}
+        checkNumberofItems()
+}
 
 //function - completely removes a dessert from cart (no matter how many of that dessert were in the cart)
 function removeFromCart(name){
@@ -98,10 +113,7 @@ const dessertsTotalPrice = selectedDesserts.reduce(function(accumulator, current
         setTotalPrice(dessertsTotalPrice)
     }, [dessertDataWAllProps])
 
-//calculates the total number of desserts 
-    const dessertsTotalCount = selectedDesserts.reduce(function(accumulator, currentValue) {
-  return accumulator + currentValue.count
-}, 0)
+
 
 //function - confirms order (aka displays modal)
 function confirmOrder(){
@@ -120,6 +132,7 @@ function startNewOrder(){
 //function - returns user to prior order after modal displays letting them know they are capped at 9 items per order
 function returntoOrder(){
     setIsMaxDessertsModalDisplayed(false)
+    checkNumberofItems()
 }
 
 return (
@@ -152,19 +165,31 @@ return (
             <div className="modal-div">
                 <img src="./assets/icon-order-confirmed.svg"/>
                 <h1>Order Confirmed</h1>
-                <p>Your order ID: {nanoid()}</p>
+                <p>Your order ID: {nanoid().slice(0, 5)}</p>
                 <p>We hope you enjoy your food!</p>
-                {mappedSelectedDesserts}
-                <div className="order-div">
-                    <p className="bold">Order Total</p> 
-                    <p className="bold">${totalPrice.toFixed(2)}</p>
-                </div>
-               
+                <div className = "modal-desserts-total">
+                    {selectedDesserts.map(function(dessert){
+                            return (
+                            <>
+                                <div className="cart-dessert" key={dessert.id}>
+                                    {isOrderConfirmedModalDisplayed && <img className = "small-order-conf-img" width="50px" src={dessert.image}/>}
+                                    <div>  
+                                        <p className="bold dessert-name-cart">{dessert.name}</p>
+                                        <p className="dessert-count-cart"><span className ="red-text-color bold">{dessert.count}x</span> @ ${(dessert.count * dessert.price).toFixed(2)}</p>  
+                                    </div>
+                                </div>
+                                <hr className = "hr"></hr>
+                            </>)})}
+                    <div className="order-div">
+                        <p className="bold">Order Total</p> 
+                        <p className="bold">${totalPrice.toFixed(2)}</p>
+                    </div>
+               </div>
                 <button className = "red-bg-color start-new-order-btn bold" onClick={startNewOrder}>Start New Order</button>
             </div>}
             {isMaxDessertsModalDisplayed &&  
             <div className="modal-div">
-                <p>We're sorry, you are limited to 9 items per order. To order more than 9 items, please submit your current order, and then start a new order.</p>
+                <p>You have reached the maximum number of items for this order. To order more than 9 items, please submit your current order, and then start a new order.</p>
                 <button className = "red-bg-color start-new-order-btn bold" onClick={returntoOrder}>Return to Order</button>
             </div>}
         <footer>JDJD Codes <FontAwesomeIcon icon={faScaleBalanced} /></footer>
