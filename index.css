@@ -234,6 +234,10 @@ hr {
     border: 3px solid hsl(14, 86%, 42%); 
 }
 
+.overlay{
+    opacity: 0.4;
+}
+
 /* @MediaQueries */
 @media (max-width: 600px) {
    

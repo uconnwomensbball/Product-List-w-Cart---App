@@ -71,9 +71,7 @@ function addToCart(id){
     setDessertDataWAllProps(prevDessert=>{ return (
         prevDessert.map(dessert=> dessert.id === id? {...dessert, count: dessert.count + 1}: dessert
         ))})
-    checkNumberofItems()
-  
-       
+    checkNumberofItems()   
     }
 
 //function 
@@ -85,8 +83,6 @@ function checkNumberofItems(){
     else if (dessertsTotalCount <9){
         setIsOrderAtMaxDesserts(false)
         setIsMaxDessertsModalDisplayed(false)}
-       
-    
 }
 
 //function - decrements the number of a dessert in cart by 1
@@ -137,8 +133,8 @@ function returntoOrder(){
 
 return (
      <>
-        <h1>Desserts</h1>
-            <div className="main">
+        <h1 className={`${isOrderConfirmedModalDisplayed? "overlay": ""}`}>Desserts</h1>
+            <div className={`main ${isOrderConfirmedModalDisplayed? "overlay": ""}`}>
                 <div id="desserts" className="desserts-div">
                     {mappedDessertData}
                 </div>
