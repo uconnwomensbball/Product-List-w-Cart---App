@@ -36,7 +36,6 @@ const mappedDessertData = dessertDataWAllProps.map(function(dessert){
      
             <p className = "bold dessert-name">{dessert.name}</p>
             <p className="red-text-color bold dessert-price">${dessert.price.toFixed(2)}</p>
-     
     </div>)
     })
 
@@ -74,7 +73,7 @@ function addToCart(id){
     checkNumberofItems()   
     }
 
-//function 
+//function NEEDS TO BE FIXED!
 function checkNumberofItems(){
        if (dessertsTotalCount === 9){
         setIsOrderAtMaxDesserts(true)
@@ -108,8 +107,6 @@ const dessertsTotalPrice = selectedDesserts.reduce(function(accumulator, current
  React.useEffect(()=>{
         setTotalPrice(dessertsTotalPrice)
     }, [dessertDataWAllProps])
-
-
 
 //function - confirms order (aka displays modal)
 function confirmOrder(){
@@ -158,35 +155,44 @@ return (
                 </div>
             </div>
             {isOrderConfirmedModalDisplayed &&  
-            <div className="modal-div">
-                <img src="./assets/icon-order-confirmed.svg"/>
-                <h1>Order Confirmed</h1>
-                <p>Your order ID: {nanoid().slice(0, 5)}</p>
-                <p>We hope you enjoy your food!</p>
-                <div className = "modal-desserts-total">
-                    {selectedDesserts.map(function(dessert){
-                            return (
-                            <>
-                                <div className="cart-dessert" key={dessert.id}>
-                                    {isOrderConfirmedModalDisplayed && <img className = "small-order-conf-img" width="50px" src={dessert.image}/>}
-                                    <div>  
-                                        <p className="bold dessert-name-cart">{dessert.name}</p>
-                                        <p className="dessert-count-cart"><span className ="red-text-color bold">{dessert.count}x</span> @ ${(dessert.count * dessert.price).toFixed(2)}</p>  
+             <div className="modal-overlay" onClick={e => e.stopPropagation()}>
+                <div className="modal-div">
+                    <img src="./assets/icon-order-confirmed.svg"/>
+                    <h1>Order Confirmed</h1>
+                    <p>Your order ID: {nanoid().slice(0, 5)}</p>
+                    <p>We hope you enjoy your food!</p>
+                    <div className = "modal-desserts-total">
+                        {selectedDesserts.map(function(dessert){
+                                return (
+                                <>
+                                    <div className="cart-dessert" key={dessert.id}>
+                                        <div className="modal-dessert-details">
+                                            {isOrderConfirmedModalDisplayed && <img className = "modal-small-order-conf-img" src={dessert.image}/>}
+                                        
+                                            <div>  
+                                                <p className="bold dessert-name-cart">{dessert.name}</p>
+                                                <p className="dessert-count-cart"><span className ="red-text-color bold">x{dessert.count}</span></p>  
+                                            </div>
+                                        </div>
+                                            <p>${(dessert.count * dessert.price).toFixed(2)}</p>
                                     </div>
-                                </div>
-                                <hr className = "hr"></hr>
-                            </>)})}
-                    <div className="order-div">
-                        <p className="bold">Order Total</p> 
-                        <p className="bold">${totalPrice.toFixed(2)}</p>
-                    </div>
-               </div>
-                <button className = "red-bg-color start-new-order-btn bold" onClick={startNewOrder}>Start New Order</button>
+                                 
+                                    <hr className = "hr"></hr>
+                                </>)})}
+                        <div className="order-div">
+                            <p className="bold">Order Total</p> 
+                            <p className="bold">${totalPrice.toFixed(2)}</p>
+                        </div>
+                </div>
+                    <button className = "red-bg-color start-new-order-btn bold" onClick={startNewOrder}>Start New Order</button>
+                </div>
             </div>}
-            {isMaxDessertsModalDisplayed &&  
-            <div className="modal-div">
-                <p>You have reached the maximum number of items for this order. To order more than 9 items, please submit your current order, and then start a new order.</p>
-                <button className = "red-bg-color start-new-order-btn bold" onClick={returntoOrder}>Return to Order</button>
+            {isMaxDessertsModalDisplayed &&
+            <div className="modal-overlay" onClick={e => e.stopPropagation()}> 
+                <div className="modal-div">
+                    <p>You have reached the maximum number of items for this order. To order more than 9 items, please submit your current order, and then start a new order.</p>
+                    <button className = "red-bg-color start-new-order-btn bold" onClick={returntoOrder}>Return to Order</button>
+                </div>
             </div>}
         <footer>JDJD Codes <FontAwesomeIcon icon={faScaleBalanced} /></footer>
     </>

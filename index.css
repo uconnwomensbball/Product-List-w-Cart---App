@@ -9,6 +9,7 @@ body{
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    user-select: none;
 }
 
 .main{
@@ -18,8 +19,11 @@ body{
     align-items: flex-start;
     gap: 1rem; 
     max-width: 1440px;
+}
 
-
+footer{
+    text-align: center;
+    margin-top: 20px; 
 }
 
 .desserts-div{
@@ -27,7 +31,6 @@ body{
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     margin: 0px; 
-   
 }
 
 .dessert-img{
@@ -66,9 +69,8 @@ body{
     border-radius: 10px; 
     text-align: left;
     width: 300px; 
-  
-  
 }
+
 .empty-cart-content-div{
     display: flex; 
     flex-direction: column;
@@ -82,6 +84,7 @@ body{
      justify-content: space-between;
      align-items: center;
      margin: 0px; 
+     width: 100%;
 }
 
 .dessert-name-cart{
@@ -117,8 +120,6 @@ body{
     cursor: pointer;
     font-family: 'Red Hat Text';
     margin: auto;
-
-
 }
 
 .add-to-cart-btn:hover{
@@ -131,7 +132,6 @@ body{
     border-radius: 50px;
     border: 2px solid gray;
     background-color: hsl(20, 50%, 98%);
-      
 }
 
 .remove-btn:hover{
@@ -165,24 +165,38 @@ body{
     color: hsl(14, 86%, 42%);
 }
 
-footer{
-    text-align: center;
-    margin-top: 20px; 
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;      
+  padding: 20px;          
+  overflow-y: auto;       
 }
 
-/* Modal */
-.modal-div{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start; 
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: hsl(20, 50%, 98%);
-    padding: 20px; 
-    border-radius: 10px;
-    margin: 0px; 
+.modal-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: hsl(20, 50%, 98%);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 0;
+  width: 90%;
+  max-width: 520px;
+  max-height: calc(100vh - 40px); 
+  overflow-y: auto;              
+  z-index: 1001;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 .modal-div>h1{
@@ -206,7 +220,12 @@ footer{
     padding: 10px 10px 0px 10px; 
 }
 
-.small-order-conf-img{
+.modal-dessert-details{
+    display: flex; 
+    flex-direction: row;
+}
+
+.modal-small-order-conf-img{
     width: 50px; 
     margin-right: 10px; 
 }
@@ -240,7 +259,6 @@ hr {
 
 /* @MediaQueries */
 @media (max-width: 600px) {
-   
     .main{
         flex-direction: column;
         justify-content: center;
