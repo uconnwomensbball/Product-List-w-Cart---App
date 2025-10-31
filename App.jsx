@@ -25,11 +25,11 @@ const mappedDessertData = dessertDataWAllProps.map(function(dessert){
 
             {dessert.count > 0? 
                 <div className = "number-of-dessert-div">
-                    <button className = "decrement-btn bold" onClick={()=>decrementCount(dessert.id)} disabled ={isOrderConfirmedModalDisplayed}>-</button>
+                    <button className = "decrement-btn bold" onClick={()=>decrementCount(dessert.id)} >-</button>
                     <p>{dessert.count}</p>
-                    <button className = "increment-btn bold" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts || isOrderConfirmedModalDisplayed}>+</button>
+                    <button className = "increment-btn bold" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts }>+</button>
                 </div>:
-                <button className = "add-to-cart-btn" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts || isOrderConfirmedModalDisplayed}>
+                <button className = "add-to-cart-btn" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts }>
                     <img src="/assets/icon-add-to-cart.svg" /><span className = "bold">Add to Cart</span>
                 </button>
             }
@@ -62,7 +62,7 @@ const mappedSelectedDesserts = selectedDesserts.map(function(dessert){
 
 //calculates the total number of desserts 
     const dessertsTotalCount = selectedDesserts.reduce(function(accumulator, currentValue) {
-  return accumulator + currentValue.count
+  return accumulator + currentValue.count 
 }, 0)
 
 //function - adds items to cart (increments the number of a dessert in cart by 1)
@@ -70,7 +70,6 @@ function addToCart(id){
     setDessertDataWAllProps(prevDessert=>{ return (
         prevDessert.map(dessert=> dessert.id === id? {...dessert, count: dessert.count + 1}: dessert
         ))})
-    checkNumberofItems()   
     }
 
 //function NEEDS TO BE FIXED!
@@ -106,7 +105,15 @@ const dessertsTotalPrice = selectedDesserts.reduce(function(accumulator, current
 //function - updates total price 
  React.useEffect(()=>{
         setTotalPrice(dessertsTotalPrice)
+        checkNumberofItems()
+         console.log(dessertsTotalCount)
     }, [dessertDataWAllProps])
+
+//useEffect NEEDS TO BE FIXED! (useRef?)
+ React.useEffect(()=>{
+        checkNumberofItems()
+    }, [dessertsTotalCount])
+
 
 //function - confirms order (aka displays modal)
 function confirmOrder(){
@@ -125,7 +132,6 @@ function startNewOrder(){
 //function - returns user to prior order after modal displays letting them know they are capped at 9 items per order
 function returntoOrder(){
     setIsMaxDessertsModalDisplayed(false)
-    checkNumberofItems()
 }
 
 return (
@@ -149,7 +155,7 @@ return (
                             <p className="bold order-total">Order Total</p> 
                             <p className="bold">${totalPrice.toFixed(2)}</p>
                         </div>
-                        <button className = "red-bg-color confirm-btn bold" onClick={confirmOrder} disabled={isOrderAtMaxDesserts}>Confirm Order</button>
+                        <button className = "red-bg-color confirm-btn bold" onClick={confirmOrder} disabled={isMaxDessertsModalDisplayed}>Confirm Order</button>
                     </> }   
                 </div>
                 </div>

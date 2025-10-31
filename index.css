@@ -267,7 +267,8 @@ hr {
         display: flex; 
         flex-direction: column;
     }
-    .modal-overlay{
-        max-width: 500px; 
+    
+    .modal-div{
+        width: 300px; 
     }
 }
