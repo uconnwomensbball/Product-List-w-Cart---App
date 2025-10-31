@@ -174,12 +174,11 @@ footer{
   height: 100vh;
   background: rgba(0,0,0,0.6);
   z-index: 1000;
-
   display: flex;
   justify-content: center;
   align-items: center;      
   padding: 20px;          
-  overflow-y: auto;       
+  overflow-y: auto;     
 }
 
 .modal-div {
@@ -267,5 +266,8 @@ hr {
     .desserts-div{
         display: flex; 
         flex-direction: column;
+    }
+    .modal-overlay{
+        max-width: 500px; 
     }
 }
