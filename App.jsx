@@ -3,6 +3,7 @@ import { dessertsData } from "./data.js"
 import { nanoid } from 'nanoid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faScaleBalanced } from '@fortawesome/free-solid-svg-icons'
+
 export default function App(){
 
 //variables 
@@ -27,9 +28,9 @@ const mappedDessertData = dessertDataWAllProps.map(function(dessert){
                 <div className = "number-of-dessert-div">
                     <button className = "decrement-btn bold" onClick={()=>decrementCount(dessert.id)} >-</button>
                     <p>{dessert.count}</p>
-                    <button className = "increment-btn bold" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts }>+</button>
+                    <button className = "increment-btn bold" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts}>+</button>
                 </div>:
-                <button className = "add-to-cart-btn" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts }>
+                <button className = "add-to-cart-btn" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts}>
                     <img src="/assets/icon-add-to-cart.svg" /><span className = "bold">Add to Cart</span>
                 </button>
             }
@@ -39,7 +40,7 @@ const mappedDessertData = dessertDataWAllProps.map(function(dessert){
     </div>)
     })
 
-//variable to isolate the desserts in the cart that have a count greater than 0 so all desserts aren't displayed in the cart
+//variable to isolate the desserts in the cart that have a count greater than 0 (so all desserts aren't displayed in the cart)
 const selectedDesserts = dessertDataWAllProps.filter(dessert=>dessert.count > 0)
 
 //maps over selected desserts to display in cart and in modal
@@ -52,7 +53,7 @@ const mappedSelectedDesserts = selectedDesserts.map(function(dessert){
                 <p className="dessert-count-cart"><span className ="red-text-color bold">{dessert.count}x</span> @ ${(dessert.count * dessert.price).toFixed(2)}</p>  
             </div>
                     <div>
-                        <button className="remove-btn" onClick={()=>removeFromCart(dessert.name)} disabled={isOrderAtMaxDesserts || isOrderConfirmedModalDisplayed}>
+                        <button className="remove-btn" onClick={()=>removeFromCart(dessert.name)} disabled={isOrderConfirmedModalDisplayed || isMaxDessertsModalDisplayed}>
                             <img className = "remove-item-x" src="./assets/icon-remove-item.svg"/>
                         </button>
                     </div>
@@ -72,26 +73,27 @@ function addToCart(id){
         ))})
     }
 
-//function NEEDS TO BE FIXED!
-function checkNumberofItems(){
-       if (dessertsTotalCount === 9){
+//function - checks whether user is at 9 desserts, and if so, displays a modal telling user they are at their dessert limit for that order
+const prevDessertsCountRef = React.useRef(dessertsTotalCount)
+React.useEffect(()=>{
+    if (prevDessertsCountRef.current < 9 && dessertsTotalCount === 9){
         setIsOrderAtMaxDesserts(true)
-        setIsMaxDessertsModalDisplayed(true)}
-    
-    else if (dessertsTotalCount <9){
+        setIsMaxDessertsModalDisplayed(true)
+    }
+     else if (dessertsTotalCount < 9){
         setIsOrderAtMaxDesserts(false)
         setIsMaxDessertsModalDisplayed(false)}
-}
 
-//function - decrements the number of a dessert in cart by 1
+    prevDessertsCountRef.current = dessertsTotalCount
+    }, [dessertsTotalCount])
+
+//function - decrements the number of a dessert in the cart by 1
 function decrementCount(id){
      setDessertDataWAllProps(prevDessert=>{ return (
         prevDessert.map(dessert=> dessert.id === id? {...dessert, count: dessert.count - 1}: dessert
-        ))})
-        checkNumberofItems()
-}
+        ))})}
 
-//function - completely removes a dessert from cart (no matter how many of that dessert were in the cart)
+//function - completely removes a dessert from the cart (no matter how many of that dessert are in the cart)
 function removeFromCart(name){
     setDessertDataWAllProps(prevDessert=>{ return (
         prevDessert.map(dessert=> dessert.name === name? {...dessert, count: 0}: dessert
@@ -105,15 +107,8 @@ const dessertsTotalPrice = selectedDesserts.reduce(function(accumulator, current
 //function - updates total price 
  React.useEffect(()=>{
         setTotalPrice(dessertsTotalPrice)
-        checkNumberofItems()
          console.log(dessertsTotalCount)
     }, [dessertDataWAllProps])
-
-//useEffect NEEDS TO BE FIXED! (useRef?)
- React.useEffect(()=>{
-        checkNumberofItems()
-    }, [dessertsTotalCount])
-
 
 //function - confirms order (aka displays modal)
 function confirmOrder(){
@@ -136,7 +131,7 @@ function returntoOrder(){
 
 return (
      <>
-        <h1 className={`${isOrderConfirmedModalDisplayed? "overlay": ""}`}>Desserts</h1>
+        <h1 className={`${isOrderConfirmedModalDisplayed? "overlay dessert-header": "dessert-header"}`}>Desserts</h1>
             <div className={`main ${isOrderConfirmedModalDisplayed? "overlay": ""}`}>
                 <div id="desserts" className="desserts-div">
                     {mappedDessertData}

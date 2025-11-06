@@ -78,6 +78,10 @@ footer{
     justify-content: center;
 }
 
+.empty-cart-content-div>p{
+    margin-bottom: 0px; 
+}
+
 .cart-dessert{
      display: flex; 
      flex-direction: row; 
@@ -270,5 +274,8 @@ hr {
     
     .modal-div{
         width: 300px; 
+    }
+    .dessert-header{
+        margin-left: 25px;
     }
 }
