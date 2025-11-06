@@ -131,7 +131,7 @@ function returntoOrder(){
 
 return (
      <>
-        <h1 className={`${isOrderConfirmedModalDisplayed? "overlay dessert-header": "dessert-header"}`}>Desserts</h1>
+        <h1 className={`dessert-header ${isOrderConfirmedModalDisplayed? "overlay": ""}`}>Desserts</h1>
             <div className={`main ${isOrderConfirmedModalDisplayed? "overlay": ""}`}>
                 <div id="desserts" className="desserts-div">
                     {mappedDessertData}
