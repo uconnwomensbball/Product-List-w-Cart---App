@@ -18,34 +18,34 @@ body{
     justify-content: center;
     align-items: flex-start;
     gap: 1rem; 
-    max-width: 1440px;
+    max-width: 90rem;
 }
 
 footer{
     text-align: center;
-    margin-top: 20px; 
+    margin-top: 1.25rem; 
 }
 
 .desserts-div{
     display: grid; 
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
-    margin: 0px; 
+    margin: 0; 
 }
 
 .dessert-img{
     height: 15rem; 
     width: 15rem;
-    border-radius: 10px;
-    margin-bottom: 7px; 
+    border-radius: .625rem;
+    margin-bottom: .438rem; 
 }
 
 .dessert-name{
-    margin: 10px 0px 5px 0px; 
+    margin: .625rem 0 .313rem 0; 
 }
 
 .dessert-price{
-    margin: 0px; 
+    margin: 0; 
 }
 
 .number-of-dessert-div{
@@ -55,20 +55,20 @@ footer{
     align-items: center;
     background-color: hsl(14, 86%, 42%);
     color: hsl(20, 50%, 98%);
-    border-radius: 50px;
+    border-radius: 3.125rem;
     margin: auto; 
     font-family: 'Red Hat Text';
-    height: 37px;
-    width:  140px;
+    height: 2.313rem;
+    width:  8.75rem;
 }
 
 /* Cart */
 .cart-div{
     background-color: hsl(20, 50%, 98%);
-    padding: 0px 20px 20px 20px; 
-    border-radius: 10px; 
+    padding: 0 1.25rem 1.25rem 1.25rem; 
+    border-radius: .625rem; 
     text-align: left;
-    width: 300px; 
+    width: 18.75rem; 
 }
 
 .empty-cart-content-div{
@@ -79,7 +79,7 @@ footer{
 }
 
 .empty-cart-content-div>p{
-    margin-bottom: 0px; 
+    margin-bottom: 0; 
 }
 
 .cart-dessert{
@@ -87,17 +87,17 @@ footer{
      flex-direction: row; 
      justify-content: space-between;
      align-items: center;
-     margin: 0px; 
+     margin: 0; 
      width: 100%;
 }
 
 .dessert-name-cart{
-    margin: 0px 0px 5px 0px; 
+    margin: 0 0 .313rem 0; 
 }
 
 .dessert-count-cart{
-    margin: 0px;
-    padding: 0px 0px 2px 0px;  
+    margin: 0;
+    padding: 0 0 .125rem 0;  
 }
 
 .order-div{
@@ -109,7 +109,7 @@ footer{
 }
 
 .order-div>p{
-    margin: 10px 0px 20px 0px; 
+    margin: .625rem 0 1.25rem 0; 
 }
 
 /* Buttons */
@@ -119,8 +119,8 @@ footer{
     justify-content: center;
     align-items: center;
     background-color: hsl(20, 50%, 98%);
-    border-radius: 50px;
-    padding: 7px 20px; 
+    border-radius: 3.125rem;
+    padding: .438rem 1.25rem; 
     cursor: pointer;
     font-family: 'Red Hat Text';
     margin: auto;
@@ -133,7 +133,7 @@ footer{
 
 .remove-btn{
     cursor: pointer;
-    border-radius: 50px;
+    border-radius: 3.125rem;
     border: 2px solid gray;
     background-color: hsl(20, 50%, 98%);
 }
@@ -144,9 +144,9 @@ footer{
 
 .confirm-btn, .start-new-order-btn{
     cursor: pointer;
-    border-radius: 50px;
+    border-radius: 3.125rem;
     border: none; 
-    padding: 15px 15px;
+    padding: .938rem;
     font-family: 'Red Hat Text'; 
     width: 100%; 
 }
@@ -161,7 +161,7 @@ footer{
     border: 1.75px solid hsl(20, 50%, 98%);
     color: hsl(20, 50%, 98%);
     cursor: pointer;
-    margin: 0px; 
+    margin: 0; 
 }
 
 .increment-btn:hover, .decrement-btn:hover{
@@ -181,7 +181,7 @@ footer{
   display: flex;
   justify-content: center;
   align-items: center;      
-  padding: 20px;          
+  padding: 1.25rem;          
   overflow-y: auto;     
 }
 
@@ -191,23 +191,23 @@ footer{
   justify-content: flex-start;
   align-items: flex-start;
   background-color: hsl(20, 50%, 98%);
-  padding: 20px;
-  border-radius: 10px;
+  padding: 1.25rem;
+  border-radius: .625rem;
   margin: 0;
   width: 90%;
-  max-width: 520px;
+  max-width: 32.5rem;
   max-height: calc(100vh - 40px); 
   overflow-y: auto;              
   z-index: 1001;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 .25rem 1.25rem rgba(0,0,0,0.3);
 }
 
 .modal-div>h1{
-    margin: 10px 0px 10px 0px; 
+    margin: .625rem 0 .625rem 0; 
 }
 
 .modal-div>p{
-    margin-top: 0px;     
+    margin-top: 0;     
 }
 
 .modal-desserts-total{
@@ -216,11 +216,11 @@ footer{
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 10px; 
+    gap: .625rem; 
     width: 100%;
-    border-radius: 10px; 
-    margin-bottom: 20px; 
-    padding: 10px 10px 0px 10px; 
+    border-radius: .625rem; 
+    margin-bottom: 1.25rem; 
+    padding: .625rem .625rem 0 .625rem; 
 }
 
 .modal-dessert-details{
@@ -229,8 +229,8 @@ footer{
 }
 
 .modal-small-order-conf-img{
-    width: 50px; 
-    margin-right: 10px; 
+    width: 3.125rem; 
+    margin-right: .625rem; 
 }
 
 hr {
@@ -273,9 +273,9 @@ hr {
     }
     
     .modal-div{
-        width: 300px; 
+        width: 18.75rem; 
     }
     .dessert-header{
-        margin-left: 25px;
+        margin-left: 1.563rem;
     }
 }

@@ -22,7 +22,7 @@ const [isMaxDessertsModalDisplayed, setIsMaxDessertsModalDisplayed] = React.useS
 const mappedDessertData = dessertDataWAllProps.map(function(dessert){
     return (
     <div className = "individual-dessert-div" key={dessert.id}>
-            <img className={`dessert-img ${dessert.count >0? "red-border":""}`} src={dessert.image} />
+            <img className={`dessert-img ${dessert.count >0? "red-border":""}`} src={dessert.image} alt={`${dessert.name}`}/>
 
             {dessert.count > 0? 
                 <div className = "number-of-dessert-div">
@@ -141,7 +141,7 @@ return (
                     <div id="cart-content">
                     {selectedDesserts.length === 0? 
                     <div className = "empty-cart-content-div">
-                        <img src="./assets/illustration-empty-cart.svg"/>
+                        <img src="./assets/illustration-empty-cart.svg" alt=""/>
                         <p>Your added items will appear here</p>
                     </div>:
                     <>
@@ -158,7 +158,7 @@ return (
             {isOrderConfirmedModalDisplayed &&  
              <div className="modal-overlay" onClick={e => e.stopPropagation()}>
                 <div className="modal-div">
-                    <img src="./assets/icon-order-confirmed.svg"/>
+                    <img src="./assets/icon-order-confirmed.svg" alt=""/>
                     <h1>Order Confirmed</h1>
                     <p>Your order ID: {nanoid().slice(0, 5)}</p>
                     <p>We hope you enjoy your food!</p>
@@ -168,7 +168,7 @@ return (
                                 <>
                                     <div className="cart-dessert" key={dessert.id}>
                                         <div className="modal-dessert-details">
-                                            {isOrderConfirmedModalDisplayed && <img className = "modal-small-order-conf-img" src={dessert.image}/>}
+                                            {isOrderConfirmedModalDisplayed && <img className = "modal-small-order-conf-img" src={dessert.image} alt={`${dessert.name}`}/>}
                                         
                                             <div>  
                                                 <p className="bold dessert-name-cart">{dessert.name}</p>
