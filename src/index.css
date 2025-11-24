@@ -171,35 +171,35 @@ footer{
 
 /* Modal */
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.6);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;      
-  padding: 1.25rem;          
-  overflow-y: auto;     
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;      
+    padding: 1.25rem;          
+    overflow-y: auto;     
 }
 
 .modal-div {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  background-color: hsl(20, 50%, 98%);
-  padding: 1.25rem;
-  border-radius: .625rem;
-  margin: 0;
-  width: 90%;
-  max-width: 32.5rem;
-  max-height: calc(100vh - 40px); 
-  overflow-y: auto;              
-  z-index: 1001;
-  box-shadow: 0 .25rem 1.25rem rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: hsl(20, 50%, 98%);
+    padding: 1.25rem;
+    border-radius: .625rem;
+    margin: 0;
+    width: 90%;
+    max-width: 32.5rem;
+    max-height: calc(100vh - 40px); 
+    overflow-y: auto;              
+    z-index: 1001;
+    box-shadow: 0 .25rem 1.25rem rgba(0,0,0,0.3);
 }
 
 .modal-div>h1{
