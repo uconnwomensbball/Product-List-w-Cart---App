@@ -124,6 +124,7 @@ footer{
     cursor: pointer;
     font-family: 'Red Hat Text';
     margin: auto;
+    gap:.25rem; 
 }
 
 .add-to-cart-btn:hover{

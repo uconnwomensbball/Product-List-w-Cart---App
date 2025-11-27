@@ -1,4 +1,5 @@
 import React from 'react'
+import { useRef } from 'react' 
 import { dessertsData } from "./data.js"
 import { nanoid } from 'nanoid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -18,6 +19,11 @@ const [isOrderConfirmedModalDisplayed, setIsOrderConfirmedModalDisplayed] = Reac
 const [isOrderAtMaxDesserts, setIsOrderAtMaxDesserts] = React.useState(false)
 const [isMaxDessertsModalDisplayed, setIsMaxDessertsModalDisplayed] = React.useState(false)
 
+//accessibility 
+const orderConfirmedRef = useRef(null)
+//const startNewOrderRef= useRef(null)
+const cartHeadingRef = useRef(null)
+
 //maps over dessert items to display them on DOM
 const mappedDessertData = dessertDataWAllProps.map(function(dessert){
     return (
@@ -26,12 +32,12 @@ const mappedDessertData = dessertDataWAllProps.map(function(dessert){
 
             {dessert.count > 0? 
                 <div className = "number-of-dessert-div">
-                    <button className = "decrement-btn bold" onClick={()=>decrementCount(dessert.id)} >-</button>
+                    <button className = "decrement-btn bold" onClick={()=>decrementCount(dessert.id)} aria-label={`Remove one ${dessert.name} from your cart`}>-</button>
                     <p>{dessert.count}</p>
-                    <button className = "increment-btn bold" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts}>+</button>
+                    <button className = "increment-btn bold" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts} aria-label={`Add one ${dessert.name} to your cart`}>+</button>
                 </div>:
-                <button className = "add-to-cart-btn" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts}>
-                    <img src="/assets/icon-add-to-cart.svg" /><span className = "bold">Add to Cart</span>
+                <button className = "add-to-cart-btn" onClick={()=>addToCart(dessert.id)} disabled={isOrderAtMaxDesserts} aria-label={`Add one ${dessert.name} to your cart`}>
+                    <img src="/assets/icon-add-to-cart.svg" alt="" /><span className = "bold">Add to Cart</span>
                 </button>
             }
      
@@ -53,8 +59,8 @@ const mappedSelectedDesserts = selectedDesserts.map(function(dessert){
                 <p className="dessert-count-cart"><span className ="red-text-color bold">{dessert.count}x</span> @ ${(dessert.count * dessert.price).toFixed(2)}</p>  
             </div>
                     <div>
-                        <button className="remove-btn" onClick={()=>removeFromCart(dessert.name)} disabled={isOrderConfirmedModalDisplayed || isMaxDessertsModalDisplayed}>
-                            <img className = "remove-item-x" src="./assets/icon-remove-item.svg"/>
+                        <button className="remove-btn" onClick={()=>removeFromCart(dessert.name)} disabled={isOrderConfirmedModalDisplayed || isMaxDessertsModalDisplayed} aria-label={`Remove all ${dessert.name} from your cart`}>
+                            <img className = "remove-item-x" src="./assets/icon-remove-item.svg" alt=""/>
                         </button>
                     </div>
         </div>
@@ -113,7 +119,13 @@ const dessertsTotalPrice = selectedDesserts.reduce(function(accumulator, current
 //function - confirms order (aka displays modal)
 function confirmOrder(){
     setIsOrderConfirmedModalDisplayed(true)
+    
 }
+
+React.useEffect(()=>{
+    if (isOrderConfirmedModalDisplayed && orderConfirmedRef.current)
+    orderConfirmedRef.current.focus()
+}, [isOrderConfirmedModalDisplayed])
 
 //function - starts new order and clears out prior order
 function startNewOrder(){
@@ -122,13 +134,14 @@ function startNewOrder(){
         ...dessert, 
         id: nanoid(),  
         count: 0})))
+    cartHeadingRef.current.focus()
 }
 
 //function - returns user to prior order after modal displays letting them know they are capped at 9 items per order
 function returntoOrder(){
     setIsMaxDessertsModalDisplayed(false)
 }
-
+console.log(orderConfirmedRef.current)
 return (
      <>
         <h1 className={`dessert-header ${isOrderConfirmedModalDisplayed? "overlay": ""}`}>Desserts</h1>
@@ -137,7 +150,7 @@ return (
                     {mappedDessertData}
                 </div>
                 <div className="cart-div">
-                    <h2 className="red-text-color">Your Cart (<span>{dessertsTotalCount}</span>)</h2>
+                    <h2 className="red-text-color" ref={cartHeadingRef} tabIndex="-1">Your Cart (<span>{dessertsTotalCount}</span>)</h2>
                     <div id="cart-content">
                     {selectedDesserts.length === 0? 
                     <div className = "empty-cart-content-div">
@@ -150,16 +163,21 @@ return (
                             <p className="bold order-total">Order Total</p> 
                             <p className="bold">${totalPrice.toFixed(2)}</p>
                         </div>
-                        <button className = "red-bg-color confirm-btn bold" onClick={confirmOrder} disabled={isMaxDessertsModalDisplayed}>Confirm Order</button>
-                    </> }   
+                        <div aria-live="polite" className="sr-only">
+                            {selectedDesserts.length === 0? `Your cart now has ${dessertsTotalCount} items, total $${totalPrice.toFixed(2)}.` : 
+                            "Your cart is empty."}
+                        </div>  
+                        <button className = "red-bg-color confirm-btn bold" onClick={confirmOrder} disabled={isMaxDessertsModalDisplayed} aria-controls="order-confirmed-modal">Confirm Order</button>
+                    </> } 
+                    
                 </div>
                 </div>
             </div>
             {isOrderConfirmedModalDisplayed &&  
              <div className="modal-overlay" onClick={e => e.stopPropagation()}>
-                <div className="modal-div">
+                <div id= "order-confirmed-modal" className="modal-div" ref={orderConfirmedRef} role="dialog" aria-modal="true" tabIndex="-1" aria-labelledby="orderConfirmedModalTitle">
                     <img src="./assets/icon-order-confirmed.svg" alt=""/>
-                    <h1>Order Confirmed</h1>
+                    <h1 id="orderConfirmedModalTitle">Order Confirmed</h1>
                     <p>Your order ID: {nanoid().slice(0, 5)}</p>
                     <p>We hope you enjoy your food!</p>
                     <div className = "modal-desserts-total">
@@ -190,7 +208,7 @@ return (
             </div>}
             {isMaxDessertsModalDisplayed &&
             <div className="modal-overlay" onClick={e => e.stopPropagation()}> 
-                <div className="modal-div">
+                <div id="max-desserts-modal" className="modal-div" role="alert" aria-modal="true" tabIndex="-1">
                     <p>You have reached the maximum number of items for this order. To order more than 9 items, please submit your current order, and then start a new order.</p>
                     <button className = "red-bg-color start-new-order-btn bold" onClick={returntoOrder}>Return to Order</button>
                 </div>
