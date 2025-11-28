@@ -4,6 +4,7 @@ import { dessertsData } from "./data.js"
 import { nanoid } from 'nanoid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faScaleBalanced } from '@fortawesome/free-solid-svg-icons'
+import { FocusTrap } from 'focus-trap-react'
 
 export default function App(){
 
@@ -19,9 +20,7 @@ const [isOrderConfirmedModalDisplayed, setIsOrderConfirmedModalDisplayed] = Reac
 const [isOrderAtMaxDesserts, setIsOrderAtMaxDesserts] = React.useState(false)
 const [isMaxDessertsModalDisplayed, setIsMaxDessertsModalDisplayed] = React.useState(false)
 
-//accessibility 
-const orderConfirmedRef = useRef(null)
-//const startNewOrderRef= useRef(null)
+//accessibility - ref
 const cartHeadingRef = useRef(null)
 
 //maps over dessert items to display them on DOM
@@ -119,13 +118,7 @@ const dessertsTotalPrice = selectedDesserts.reduce(function(accumulator, current
 //function - confirms order (aka displays modal)
 function confirmOrder(){
     setIsOrderConfirmedModalDisplayed(true)
-    
 }
-
-React.useEffect(()=>{
-    if (isOrderConfirmedModalDisplayed && orderConfirmedRef.current)
-    orderConfirmedRef.current.focus()
-}, [isOrderConfirmedModalDisplayed])
 
 //function - starts new order and clears out prior order
 function startNewOrder(){
@@ -140,8 +133,9 @@ function startNewOrder(){
 //function - returns user to prior order after modal displays letting them know they are capped at 9 items per order
 function returntoOrder(){
     setIsMaxDessertsModalDisplayed(false)
+    cartHeadingRef.current.focus()
 }
-console.log(orderConfirmedRef.current)
+
 return (
      <>
         <h1 className={`dessert-header ${isOrderConfirmedModalDisplayed? "overlay": ""}`}>Desserts</h1>
@@ -164,8 +158,8 @@ return (
                             <p className="bold">${totalPrice.toFixed(2)}</p>
                         </div>
                         <div aria-live="polite" className="sr-only">
-                            {selectedDesserts.length === 0? `Your cart now has ${dessertsTotalCount} items, total $${totalPrice.toFixed(2)}.` : 
-                            "Your cart is empty."}
+                            {selectedDesserts.length === 0? `Your cart is empty.` : 
+                            `Cart updated. Your cart now has ${dessertsTotalCount} items, total $${totalPrice.toFixed(2)}.`}
                         </div>  
                         <button className = "red-bg-color confirm-btn bold" onClick={confirmOrder} disabled={isMaxDessertsModalDisplayed} aria-controls="order-confirmed-modal">Confirm Order</button>
                     </> } 
@@ -175,44 +169,55 @@ return (
             </div>
             {isOrderConfirmedModalDisplayed &&  
              <div className="modal-overlay" onClick={e => e.stopPropagation()}>
-                <div id= "order-confirmed-modal" className="modal-div" ref={orderConfirmedRef} role="dialog" aria-modal="true" tabIndex="-1" aria-labelledby="orderConfirmedModalTitle">
-                    <img src="./assets/icon-order-confirmed.svg" alt=""/>
-                    <h1 id="orderConfirmedModalTitle">Order Confirmed</h1>
-                    <p>Your order ID: {nanoid().slice(0, 5)}</p>
-                    <p>We hope you enjoy your food!</p>
-                    <div className = "modal-desserts-total">
-                        {selectedDesserts.map(function(dessert){
-                                return (
-                                <>
-                                    <div className="cart-dessert" key={dessert.id}>
-                                        <div className="modal-dessert-details">
-                                            {isOrderConfirmedModalDisplayed && <img className = "modal-small-order-conf-img" src={dessert.image} alt={`${dessert.name}`}/>}
-                                        
-                                            <div>  
-                                                <p className="bold dessert-name-cart">{dessert.name}</p>
-                                                <p className="dessert-count-cart"><span className ="red-text-color bold">x{dessert.count}</span></p>  
+                <FocusTrap
+                focusTrapOptions={{
+                escapeDeactivates: true 
+                }}>
+                    <div id= "order-confirmed-modal" className="modal-div" role="dialog" aria-modal="true" tabIndex="-1" aria-labelledby="orderConfirmedModalTitle">
+                        <img src="./assets/icon-order-confirmed.svg" alt=""/>
+                        <h1 id="orderConfirmedModalTitle">Order Confirmed</h1>
+                        <p aria-live="polite">Your order ID: {nanoid().slice(0, 5)}</p>
+                        <p>We hope you enjoy your food!</p>
+                        <div className = "modal-desserts-total" aria-live="polite">
+                            {selectedDesserts.map(function(dessert){
+                                    return (
+                                    <>
+                                        <div className="cart-dessert" key={dessert.id}>
+                                            <div className="modal-dessert-details">
+                                                {isOrderConfirmedModalDisplayed && <img className = "modal-small-order-conf-img" src={dessert.image} alt={`${dessert.name}`}/>}
+                                            
+                                                <div>  
+                                                    <p className="bold dessert-name-cart">{dessert.name}</p>
+                                                    <p className="dessert-count-cart"><span className ="red-text-color bold">x{dessert.count}</span></p>  
+                                                </div>
                                             </div>
+                                                <p>${(dessert.count * dessert.price).toFixed(2)}</p>
                                         </div>
-                                            <p>${(dessert.count * dessert.price).toFixed(2)}</p>
-                                    </div>
-                                 
-                                    <hr className = "hr"></hr>
-                                </>)})}
-                        <div className="order-div">
-                            <p className="bold">Order Total</p> 
-                            <p className="bold">${totalPrice.toFixed(2)}</p>
-                        </div>
-                </div>
-                    <button className = "red-bg-color start-new-order-btn bold" onClick={startNewOrder}>Start New Order</button>
-                </div>
+                                    
+                                        <hr className = "hr"></hr>
+                                    </>)})}
+                            <div className="order-div">
+                                <p className="bold">Order Total</p> 
+                                <p className="bold">${totalPrice.toFixed(2)}</p>
+                            </div>
+                    </div>
+                        <button className = "red-bg-color start-new-order-btn bold" onClick={startNewOrder}>Start New Order</button>
+                    </div>
+                </FocusTrap>
             </div>}
             {isMaxDessertsModalDisplayed &&
-            <div className="modal-overlay" onClick={e => e.stopPropagation()}> 
-                <div id="max-desserts-modal" className="modal-div" role="alert" aria-modal="true" tabIndex="-1">
-                    <p>You have reached the maximum number of items for this order. To order more than 9 items, please submit your current order, and then start a new order.</p>
-                    <button className = "red-bg-color start-new-order-btn bold" onClick={returntoOrder}>Return to Order</button>
-                </div>
+            <div className="modal-overlay" onClick={e => e.stopPropagation()}>
+                <FocusTrap
+                focusTrapOptions={{
+                escapeDeactivates: true
+                }}>
+                    <div id="max-desserts-modal" className="modal-div" role="alertdialog" aria-modal="true" tabIndex="-1"  aria-labelledby="max-desserts-modal-text">
+                        <h2 id="max-desserts-modal-title" className="sr-only">Maximum Desserts Reached</h2>
+                        <p id="max-desserts-modal-text">You have reached the maximum number of items for this order. To order more than 9 items, please submit your current order, and then start a new order.</p>
+                        <button className = "red-bg-color start-new-order-btn bold" onClick={returntoOrder}>Return to Order</button>
+                    </div>
+                </FocusTrap>
             </div>}
-        <footer>JDJD Codes <FontAwesomeIcon icon={faScaleBalanced} /></footer>
+        <footer>JDJD Codes <FontAwesomeIcon icon={faScaleBalanced}/></footer>
     </>
 )}
