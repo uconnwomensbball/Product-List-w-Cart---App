@@ -183,8 +183,7 @@ footer{
     justify-content: center;
     align-items: center;      
     padding: 1.25rem;          
-    overflow-y: auto;   
-    overflow-x: auto;  
+    overflow-y: auto;    
 }
 
 .modal-div {
@@ -199,7 +198,7 @@ footer{
     width: 90%;
     max-width: 32.5rem;
     max-height: calc(100vh - 40px); 
-    overflow-y: auto;              
+    overflow-y: auto;            
     z-index: 1001;
     box-shadow: 0 .25rem 1.25rem rgba(0,0,0,0.3);
 }

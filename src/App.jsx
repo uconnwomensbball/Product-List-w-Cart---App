@@ -84,11 +84,12 @@ React.useEffect(()=>{
     if (prevDessertsCountRef.current < 9 && dessertsTotalCount === 9){
         setIsOrderAtMaxDesserts(true)
         setIsMaxDessertsModalDisplayed(true)
+        document.body.style.overflow = "hidden"
     }
      else if (dessertsTotalCount < 9){
         setIsOrderAtMaxDesserts(false)
-        setIsMaxDessertsModalDisplayed(false)}
-
+        setIsMaxDessertsModalDisplayed(false)
+        document.body.style.overflow = "auto"}
     prevDessertsCountRef.current = dessertsTotalCount
     }, [dessertsTotalCount])
 
@@ -118,7 +119,7 @@ const dessertsTotalPrice = selectedDesserts.reduce(function(accumulator, current
 //function - confirms order (aka displays modal)
 function confirmOrder(){
     setIsOrderConfirmedModalDisplayed(true)
-    
+      document.body.style.overflow = "hidden"
 }
 
 //function - starts new order and clears out prior order
@@ -129,12 +130,14 @@ function startNewOrder(){
         id: nanoid(),  
         count: 0})))
     cartHeadingRef.current.focus()
+       document.body.style.overflow = "auto"
 }
 
 //function - returns user to prior order after modal displays letting them know they are capped at 9 items per order
 function returntoOrder(){
     setIsMaxDessertsModalDisplayed(false)
     cartHeadingRef.current.focus()
+    document.body.style.overflow = "auto"
 }
 
 return (
