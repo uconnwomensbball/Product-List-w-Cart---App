@@ -118,6 +118,7 @@ const dessertsTotalPrice = selectedDesserts.reduce(function(accumulator, current
 //function - confirms order (aka displays modal)
 function confirmOrder(){
     setIsOrderConfirmedModalDisplayed(true)
+    
 }
 
 //function - starts new order and clears out prior order

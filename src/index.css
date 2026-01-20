@@ -275,6 +275,8 @@ hr {
 }
 
 /* @MediaQueries */
+
+/* Mobile Screens */
 @media (max-width: 600px) {
     .main{
         flex-direction: column;
@@ -292,4 +294,13 @@ hr {
     .dessert-header{
         margin-left: 1.563rem;
     }
+}
+/* Tablet Screens */
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    .desserts-div{
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin: 0; 
+}
 }
