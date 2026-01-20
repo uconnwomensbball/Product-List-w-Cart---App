@@ -285,9 +285,9 @@ hr {
         display: flex; 
         flex-direction: column;
     }
-    
+
     .modal-div{
-        width: 18.75rem; 
+        min-width: 18.75rem; 
     }
     .dessert-header{
         margin-left: 1.563rem;
