@@ -294,12 +294,10 @@ hr {
 
     .dessert-header{
         margin-left: 1.563rem;
-    }
-}
+    }}
+    
 /* Tablet Screens */
-
 @media (min-width: 801px) and (max-width: 1024px) {
     .desserts-div{
         grid-template-columns: repeat(2, 1fr);
-}
-}
+}}

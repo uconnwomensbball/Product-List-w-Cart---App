@@ -167,7 +167,6 @@ return (
                         </div>  
                         <button className = "red-bg-color confirm-btn bold" onClick={confirmOrder} disabled={isMaxDessertsModalDisplayed} aria-controls="order-confirmed-modal">Confirm Order</button>
                     </> } 
-                    
                 </div>
                 </div>
             </div>
@@ -197,7 +196,6 @@ return (
                                             </div>
                                                 <p>${(dessert.count * dessert.price).toFixed(2)}</p>
                                         </div>
-                                    
                                         <hr className = "hr"></hr>
                                     </>)})}
                             <div className="order-div">
